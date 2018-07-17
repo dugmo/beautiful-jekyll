@@ -12,7 +12,7 @@ This will be a series of posts where we create a simple lab and mature it with t
 ### The Overview
 1. [Stand up an SCCM lab in Hyper-V](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/).  This means a domain controller running DHCP and an SCCM server running current branch.
 2. [Set up OSD (operating system deployment) over PXE](https://doug.seiler.us/2018-06-05-you-down-with-osd/).  Now we have an environment.
-3. Install WSUS and start patching with SCCM.  If you have an environment, we'll need to patch it.
+3. [Install WSUS and start patching with SCCM](https://doug.seiler.us/2018-07-10-SCCM-WSUS-Patching/).  If you have an environment, we'll need to patch it.
 4. Application deployment.  On the off chance your environment needs software NOT in the Micorsoft Store.
 5. Security.  Group Policy, Secure Boot, Bitlocker, Credential Guard, Device Guard, Exploit Guard, Applocker, Defender, and maybe ATP.
 
