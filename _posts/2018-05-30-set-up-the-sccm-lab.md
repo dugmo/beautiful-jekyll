@@ -2,12 +2,13 @@
 layout: post
 published: true
 title: In the SCCM Lab
-date: '2018-05-30'
+date: '2019-05-20'
 subtitle: 'With a pen and a pad, trying to get this deployment off'
 ---
 My first lab was [Johan's hydration kit](https://deploymentresearch.com/Research/Post/580/Hydration-Kit-For-Windows-Server-2016-and-ConfigMgr-Current-Technical-Preview-Branch).  It's incredibly powerful, customizable, and educational.  Unfortunately it takes a little more time and know-how than a novice like myself was initially prepared for.
 
 However, at MMS [Steve Jesok](https://twitter.com/mrjesok) pointed out that Microsoft provides an **all-in-one** solution: the [Windows and Office Deployment Lab Kit](https://www.microsoft.com/en-us/evalcenter/evaluate-lab-kit).  Within minutes, we can have a fully functional domain controller and SCCM server.
+######  Post has been updated to be current as of 5/20/2019
 
 ### The Requirements
 1. **Set up a host device** - For this lab, I'm using a Windows 10 Pro workstation with an old i7 CPU, 16GB of RAM, and a secondary 500GB hard drive.
@@ -15,7 +16,7 @@ However, at MMS [Steve Jesok](https://twitter.com/mrjesok) pointed out that Micr
 2. **Enable Hyper-V** -  If Hyper-V is not yet installed, open _Turn Windows features on or off_, check _Hyper-V_, and click _OK_. Reboot.
 
     ![enable_hyper-v.PNG](/img/200/enable_hyper-v.PNG)
-3. **Configure networking** - Launch Hyper-V as administrator, and open the Virtual Switch Manager.  Under _Virtual Switches_, select _New virtual network switch_.  Select _External_ and click _Create Virtual Switch_.  Name it _Lab_ and and leave everything else default.  Click _OK_, and if you are prompted with a warning, click _OK_ again.
+3. **Configure networking** - Launch Hyper-V as administrator, and open the _Virtual Switch Manager_.  Under _Virtual Switches_, select _New virtual network switch_.  Select _External_ and click _Create Virtual Switch_.  Name it _Lab_ and and leave everything else default.  Click _OK_, and if you are prompted with a warning, click _OK_ again.
 
     ![configure_virtual_switch.PNG](/img/200/configure_virtual_switch.PNG)
 
@@ -31,11 +32,11 @@ However, at MMS [Steve Jesok](https://twitter.com/mrjesok) pointed out that Micr
     ![run_setup_exe.PNG](/img/200/run_setup_exe.PNG)
 4. **Setup Wizard** - Click _Next_ all the way through to the end.  It will import all the VMs into Hyper-V.
 
-5. **Configure VM Settings** - You should see HYD-DC1 and HYD-GW1 already running.  Shut them down.
+5. **Configure VM Settings** - You should see HYD-DC1 and HYD-GW1 already running.  Shut them down.  We won't be using HYD-GW1 again.
 
-6. **Domain Controller** - Right click HYD-DC1 and select _Settings_. Set Memory to 1024MB and uncheck _Enable Dynamic Memory_.  Set CPU to **one** virtual processor.
+6. **Domain Controller** - Right click HYD-DC1 and select _Settings_. Set _Maximum Memory_ to **2048**MB and leave _Enable Dynamic Memory_ checked.  Set CPU to **one** virtual processor.
 
-7. **SCCM Server** - Right click HYD-CM1 and select _Settings_. Set Memory to 8192 and uncheck _Enable Dynamic Memory_. Set CPU to **two** virtual processors.
+7. **SCCM Server** - Right click HYD-CM1 and select _Settings_. Leave memory settings at default. Set CPU to **two** virtual processors.
 
     ![hyd-cm1_settings.PNG](/img/200/hyd-cm1_settings.PNG)
 
@@ -43,10 +44,10 @@ However, at MMS [Steve Jesok](https://twitter.com/mrjesok) pointed out that Micr
 ###### Note: We will NOT be using the external virtual switch called _Lab_ from _Step 3_ of the _Requirements_ section.  It was only necessary so that Setup.exe from the _Setup_ section would run.
 1. **NAT Networking** - We'll use [Ami Casto's NAT network script](https://deploymentresearch.com/Research/Post/558/Setting-Up-New-Networking-Features-in-Server-2016 "Setting Up New Networking Features in Server 2016") instead of the Internet Gateway (HYD-GW1) to make the lab simpler.  You can learn more about NAT networking [here](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/user-guide/setup-nat-network "Set up a NAT network").
 
-2.  **Prepare the Virtual Switch** - The Powered Device Lab creates it's own private network switch, so we need to make it an _Internal_ one to work with Ami's script.  In Hyper-V click _Virtual Switch Manager_.  Click on _HYD-CorpNet_.  Select _Internal network_ and click _OK_.
+2.  **Prepare the Virtual Switch** - The Deployment Lab Kit creates it's own private network switch, so we need to make it an _Internal_ one to work with Ami's script.  In Hyper-V click _Virtual Switch Manager_.  Click on _HYD-CorpNet_.  Select _Internal network_ and click _OK_.
 
     ![internal_network.PNG](/img/200/internal_network.PNG)
-3. **Customize the script** - Launch Windows Powershell ISE as Administrator.  Copy and paste the following code into the top script pane.  This is an edited version of Ami's code customized for our Microsoft lab.  Hit F5 to run it.
+3. **Customize the script** - On the host system, launch Windows Powershell ISE as Administrator.  Copy and paste the following code into the top script pane.  This is an edited version of Ami's code customized for our Microsoft lab.  Hit F5 to run it.
 ```powershell
     New-NetIPAddress –IPAddress 10.0.0.254 -PrefixLength 24 -InterfaceAlias "vEthernet (HYD-CorpNet)" 
     New-NetNat –Name HYD-CorpNetNATNetwork –InternalIPInterfaceAddressPrefix 10.0.0.0/24
@@ -65,11 +66,11 @@ However, at MMS [Steve Jesok](https://twitter.com/mrjesok) pointed out that Micr
     ![sccm_console.png](/img/200/sccm_console.png)
 
 ### The Finishing Touch
-###### Now that we've got a functioning domain, SCCM server, and internet access, it's time to update.  These steps are detailed in the _02_Lab_Setup_ guide that is packaged with the Powered Device Lab.
+###### Now that we've got a functioning domain, SCCM server, and internet access, it's time to update.
 1. In the SCCM console, navigate to the _Administration_ node and select _Updates and Servicing_. Click on _Check for updates_.
 
     ![check_for_updates.png](/img/200/check_for_updates.png)
-2. If the latest version hasn't already started downloading, select it (in this case 1802), right click and choose _Download_.
+2. If the latest version hasn't already started downloading, select it (in this case 1902), right click and choose _Download_.
 
 3. Once it is downloading, on the bottom pane click on the _Show Status_ link.
 
