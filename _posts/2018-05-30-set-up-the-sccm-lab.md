@@ -83,7 +83,7 @@ However, at MMS [Steve Jesok](https://twitter.com/mrjesok) pointed out that Micr
 
 7. Right click the update and select _Install Update Pack_. Check _Ignore any prerequisite check warnings..._ and click _Next_ until we reach the _License Terms_.  Check the box, and keep clicking _Next_ until the wizard completes successfully.  Click _Close_.
 
-    ![ignore_prereq_warnings.PNG](/img/200/ignore_prereq_warnings.PNG)
+    ![ignore_prereq_warnings.PNG](/img/200/ignore_prereq_warnings.png)
 	![install_update_pack.PNG](/img/200/install_update_pack.PNG)
     
 8. Repeat steps 3 and 4 and watch the update installation progress.  Refresh until the Update Wizard is complete and click _Close_.
