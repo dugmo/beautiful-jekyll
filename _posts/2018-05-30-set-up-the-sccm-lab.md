@@ -2,13 +2,14 @@
 layout: post
 published: true
 title: In the SCCM Lab
-date: '2019-05-20'
+date: '2019-05-21'
 subtitle: 'With a pen and a pad, trying to get this deployment off'
 ---
+######  Updated: 5/21/2019
 My first lab was [Johan's hydration kit](https://deploymentresearch.com/Research/Post/580/Hydration-Kit-For-Windows-Server-2016-and-ConfigMgr-Current-Technical-Preview-Branch).  It's incredibly powerful, customizable, and educational.  Unfortunately it takes a little more time and know-how than a novice like myself was initially prepared for.
 
 However, at MMS [Steve Jesok](https://twitter.com/mrjesok) pointed out that Microsoft provides an **all-in-one** solution: the [Windows and Office Deployment Lab Kit](https://www.microsoft.com/en-us/evalcenter/evaluate-lab-kit).  Within minutes, we can have a fully functional domain controller and SCCM server.
-######  Post has been updated to be current as of 5/20/2019
+
 
 ### The Requirements
 1. **Set up a host device** - For this lab, I'm using a Windows 10 Pro workstation with an old i7 CPU, 16GB of RAM, and a secondary 500GB hard drive.
@@ -81,8 +82,9 @@ However, at MMS [Steve Jesok](https://twitter.com/mrjesok) pointed out that Micr
     ![updates_and_servicing.PNG](/img/200/updates_and_servicing.PNG)
 6. Once the download is complete, go back to the _Administration_ node and click on _Updates and Servicing_ again.  The update we downloaded should now say _Ready to install_.
 
-7. Right click the update and select _Install Update Pack_. Leave the defaults and click _Next_ until we reach the _License Terms_.  Check the box, and keep clicking _Next_ until the wizard completes successfully.  Click _Close_.
+7. Right click the update and select _Install Update Pack_. Check _Ignore any prerequisite check warnings..._ and click _Next_ until we reach the _License Terms_.  Check the box, and keep clicking _Next_ until the wizard completes successfully.  Click _Close_.
 
+    ![ignore_prereq_warnings.PNG](/img/200/ignore_prereq_warnings.PNG)
 	![install_update_pack.PNG](/img/200/install_update_pack.PNG)
     
 8. Repeat steps 3 and 4 and watch the update installation progress.  Refresh until the Update Wizard is complete and click _Close_.
