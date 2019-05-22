@@ -24,7 +24,7 @@ However, at MMS [Steve Jesok](https://twitter.com/mrjesok) pointed out that Micr
 ### The Setup
 1. Download the kit from the link above.  It has the virtual machines and step-by-step documentation on how to configure services.  This is the **only** thing we need to download.
 
-    ![labdownload.PNG](/img/200/labdownload.PNG)
+    ![labdownload.PNG](/img/200/labdownload.png)
 2. Extract the lab zip file, preferably to a drive that is large and fast.
 
 3. **Install** - Right click Setup.exe and run as administrator.  If prompted by SmartScreen, click _More Info_ and then click _Run anyway_.
