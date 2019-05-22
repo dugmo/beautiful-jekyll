@@ -2,7 +2,7 @@
 layout: post
 published: true
 title: In the SCCM Lab
-date: '2019-05-21'
+date: '2018-05-30'
 subtitle: 'With a pen and a pad, trying to get this deployment off'
 ---
 ######  Updated: 5/21/2019
