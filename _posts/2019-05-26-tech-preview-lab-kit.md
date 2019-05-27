@@ -61,27 +61,27 @@ We can use the [Windows and Office Deployment Lab Kit](https://www.microsoft.com
 3. Confirm the SCCM server has internet access by launching command prompt and pinging 8.8.8.8.
 
 ### Installing the SCCM Technical Preview
-1. On HYD-CM1, open _Programs and Features_.  Uninstall _System Center Configuration Manager Primary Site Setup_.
-
-    ![uninstall_sccm.png](/img/500/uninstall_sccm.png)
-2. When the _System Center Configuration Manager Setup Wizard_ launches, click _Next_.  At the _Available Setup Options_ screen, select _Uninstall this Configuration Manager site_ and click _Next_.  Leave default options, continue clicking _Next_, and accept any prompts to confirm uninstallation.
-
-    ![uninstall_site.png](/img/500/uninstall_site.png)
-3. Uninstall the _System Center Configuration Manager Cmdlet Library Setup_.  Reboot HYD-CM1.
-
-4. On the host system, download the [Technical Preview](https://www.microsoft.com/en-us/evalcenter/evaluate-system-center-configuration-manager-and-endpoint-protection-technical-preview).
+1. **Download** - On the host system, download the [Technical Preview](https://www.microsoft.com/en-us/evalcenter/evaluate-system-center-configuration-manager-and-endpoint-protection-technical-preview).
 
     ![techpreviewdownload.png](/img/500/techpreviewdownload.png)
-5. Right click the tech preview installer, select _Copy_.
+2. Right click the tech preview installer, select _Copy_.
 
-6. On HYD-CM1, navigate to the Downloads folder and paste the file.
+3. On HYD-CM1, navigate to the Downloads folder and paste the file.
 
     ![copy_tech_preview.png](/img/500/copy_tech_preview.png)
-7. Launch the tech preview installer, click _Unzip_.  It will extract the files to the root of C:\\.
+4. Launch the tech preview installer, click _Unzip_.  It will extract the files to the root of C:\\.
 
-8. Navigate to C:\SC_Configmgr_SCEP_TechPreview1902\SMSSETUP\BIN\X64, right click _setup.exe_, select _Run as administrator_.
+5. **Uninstall Current Branch** - Navigate to C:\SC_Configmgr_SCEP_TechPreview1902\SMSSETUP\BIN\X64, right click _setup.exe_, select _Run as administrator_.
 
-9. When the _System Center Configuration Manager Setup Wizard_ opens, click _Next_.  At the _Available Setup Options_ screen, check the box for _Use typical installation options for a stand-alone primary site_.  Click _Next_.
+6. When the _System Center Configuration Manager Setup Wizard_ launches, click _Next_.  At the _Available Setup Options_ screen, the only option available is _Uninstall this Configuration Manager site_.  Click _Next_.  Leave default options, continue clicking _Next_, and accept any prompts to confirm uninstallation.  Reboot _HYD-CM1_.
+
+    ![uninstall_site.png](/img/500/uninstall_site.png)
+7. **Update** - The installer will fail if there are pending reboots.  Open Windows Update, check for and install updates.  Reboot _HYD-CM1_.
+
+    ![install_windows_updates.png](/img/500/install_windows_updates.png)
+8. **Install** - Navigate to C:\SC_Configmgr_SCEP_TechPreview1902\SMSSETUP\BIN\X64 again. Right click _setup.exe_, select _Run as administrator_.
+
+9. When the _System Center Configuration Manager Setup Wizard_ opens, click _Next_.  This time at the _Available Setup Options_ screen, check the box for _Use typical installation options for a stand-alone primary site_.  Click _Next_.
 
     ![techpreview_setup_wizard.png](/img/500/techpreview_setup_wizard.png)
 10. At the _Product License Terms_ screen, check all the license agreements boxes and click _Next_.
@@ -92,6 +92,6 @@ We can use the [Windows and Office Deployment Lab Kit](https://www.microsoft.com
 12. At the _Site and Installation Settings_ screen, set the site code to **CHQ**.  Set the site name to **cm1.corp.contoso.com**.  Leave everything else and click _Next_.
 
     ![techpreview_site_settings.png](/img/500/techpreview_site_settings.png)
-13. Continue accepting defaults and click _Next_ until the prequisite check finishes.  Click _Begin Install_.
+13. Continue accepting defaults and click _Next_ until the prequisite check finishes.  Ignore any warnings and click _Begin Install_.
 
     ![techpreview_begin_install.png](/img/500/techpreview_begin_install.png)
