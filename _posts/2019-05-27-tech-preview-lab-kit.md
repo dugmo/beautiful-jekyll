@@ -1,8 +1,8 @@
 ---
 layout: post
 published: true
-title: In the Tech Preview Lab
-subtitle: 'With a pen and a pad, trying to get this deployment off'
+title: What's the Difference Between Tech Preview?
+subtitle: 'About 12 Improvements, 8 Features, and 2 Vehicles'
 date: '2019-05-27'
 ---
 
