@@ -43,22 +43,22 @@ We need an OU for our workstations to go.  While we could use the builtin Comput
 
 3. Right click the _Users_ OU, select _New_ -> _User_.
 
-	![new_user.PNG]({{site.baseurl}}/img/new_user.PNG)
+	![new_user.PNG](/img/300/new_user.PNG)
 4. Leave _Initials_, _First name_, and _Last name_ blank.  For _User logon name_ and _Full name_, type **CM_DomainJoin**.  Click _Next_.
 
-	![CM_DomainJoin]({{site.baseurl}}/img/cm_domainjoin_userlogonname.PNG)
+	![CM_DomainJoin](/img/300/cm_domainjoin_userlogonname.PNG)
 5. Set the password to **P@ssw0rd**.  Uncheck _User must change password at next logon_ and check _Password never expires_.  Click _Next_, then click _Finish_.
 
-	![cm_domainjoin_password.PNG]({{site.baseurl}}/img/cm_domainjoin_password.PNG)
+	![cm_domainjoin_password.PNG](/img/300/cm_domainjoin_password.PNG)
     
 #### Ceate the Workstations OU and set permissions
 ###### You may now skip creating the OU, it will be created with the Powershell script
 1. In the _Active Directory Users and Computers_ tool, right-click on the _CORP_ OU. Select _New_ -> _Organizational Unit_.
 
-	![new_ou.PNG]({{site.baseurl}}/img/new_ou.PNG)
+	![new_ou.PNG](/img/300/new_ou.PNG)
 2. Name the container **Workstations** and click OK.
 	
-    ![create_workstations_OU.PNG]({{site.baseurl}}/img/create_workstations_OU.PNG)
+    ![create_workstations_OU.PNG](/img/300/create_workstations_OU.PNG)
 3. On the HYD-DC1, launch _Windows Powershell ISE_ as administrator.  Johan and Mikael have [created a script to set permissions](https://deploymentresearch.com/Research/Post/353/PowerShell-Script-to-set-permissions-in-Active-Directory-for-OSD) on the domain join account. This is so it can add computers to the _Workstations_ OU during OSD.
 
 4. Below is a [modified version of Johan and Mikael's script](https://github.com/dugmo/DRFiles/blob/master/Scripts/Set-OUPermissions.ps1) to suit our lab.  It will now create the account and OU if they haven't been manually created already.  Paste the code into the top script pane, and hit _F5_ to run
@@ -197,7 +197,7 @@ We need an OU for our workstations to go.  While we could use the builtin Comput
 
 6. When it prompts for _target OU_, type **Workstations**. Hit enter.
 
-	![domainjoin_permissions_script.PNG]({{site.baseurl}}/img/domainjoin_permissions_script.PNG)
+	![domainjoin_permissions_script.PNG](/img/300/domainjoin_permissions_script.PNG)
     
 ### The Windows Assessment and Deployment Kit
 We ended the [SCCM lab setup](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/) by updating to the latest version of Current Branch.  So we'll need to install the latest version of the Windows ADK so we're fully compatible deploying the current version of Windows 10.
@@ -205,12 +205,12 @@ We ended the [SCCM lab setup](https://doug.seiler.us/2018-05-30-set-up-the-sccm-
 
 2. Open the _Programs and Features_ control panel, and uninstall the existing Windows Assessment and Deployment Kit - Windows 10.
 
-	![uninstall_adk.PNG]({{site.baseurl}}/img/uninstall_adk.PNG)
+	![uninstall_adk.PNG](/img/300/uninstall_adk.PNG)
 3. Download the [Windows ADK](https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install) and run it.  Jonathan Lefebvre of the System Center Dudes has a [great guide on setting up the ADK](https://www.systemcenterdudes.com/how-to-update-windows-adk-on-a-sccm-server/) for SCCM.
 
 4. Accept the defaults until we reach the _Select the features you want to install_ section.  Uncheck everything except _Deployment Tools_, _Windows Preinstallation Environment (Windows PE)_, and _User State Migration Tool (USMT)_.  Click _Install_.
 
-	![windows_adk_features.PNG]({{site.baseurl}}/img/windows_adk_features.PNG)
+	![windows_adk_features.PNG](/img/300/windows_adk_features.PNG)
 5. Once the install is complete, click _Close_.  Reboot the SCCM server.
 
 
@@ -225,17 +225,17 @@ Boundaries and Boundary groups are how we logically define which sites (servers)
 
 4. **General tab** - Set description to **PXE**.  Change _Type_ to **IP address range**.  We will use the DHCP range from the domain controller.  Set _Starting IP address_ to **10.0.0.100** and set _Ending IP address_ to **10.0.0.200**.
 
-	![create_boundary.png]({{site.baseurl}}/img/create_boundary.png)
+	![create_boundary.png](/img/300/create_boundary.png)
     
 	For reference, here is what the DHCP address pool looks like:
     
-    ![dhcp_scope.png]({{site.baseurl}}/img/dhcp_scope.png)
+    ![dhcp_scope.png](/img/300/dhcp_scope.png)
 5. **Boundary Groups tab** - Select the _Boundary Groups_ tab. Click _Add_.  Check _Corp Boundary Group_ and click _OK_.  Click _OK_ again to create the boundary.
 
-	![create_boundary_group.png]({{site.baseurl}}/img/create_boundary_group.png)
+	![create_boundary_group.png](/img/300/create_boundary_group.png)
 6. The Microsoft lab already has the boundary group created and configured, but we'll just verify the settings.  Click on _Boundary Groups_, right-click _Corp Boundary Group_ and select _Properties_.  Select the _References_ tab and confirm that _User this boundary group for site assignment_ is checked.
 
-	![confirm_boundary_group.PNG]({{site.baseurl}}/img/confirm_boundary_group.PNG)
+	![confirm_boundary_group.PNG](/img/300/confirm_boundary_group.PNG)
 
 ### The Distribution Point
 In SCCM, distribution points are where workstations get their content.  This is true for OSD as well, and we need our DPs to function as PXE servers.
@@ -245,10 +245,10 @@ In SCCM, distribution points are where workstations get their content.  This is 
 
 3. **General tab** - Leave _HTTP_ selected and check _Allow clients to connect anonymously_.
 
-	![dp_general_tab.png]({{site.baseurl}}/img/dp_general_tab.png)
+	![dp_general_tab.png](/img/300/dp_general_tab.png)
 4. **PXE tab** - To automatically install WDS and configure PXE, check _Enable PXE support for clients_.  Additionally check _Allow this distribution point to respond to incoming PXE requests_ **AND** _Enable unknown computer support_.  Uncheck _Require a password when computers use PXE_ and click _OK_.
 
-	![dp_pxe_tab.png]({{site.baseurl}}/img/dp_pxe_tab.png)
+	![dp_pxe_tab.png](/img/300/dp_pxe_tab.png)
 
 
 ## Sources
@@ -414,12 +414,12 @@ We need an operating system image as the basis of OSD.  There are several guides
 
 2. Navigate to the sources folder, right-click _install.wim_ and select _copy_.
 
-	![install_wim.png]({{site.baseurl}}/img/install_wim.png)
+	![install_wim.png](/img/300/install_wim.png)
 3. On HYD-CM1 (the SCCM server) navigate to _C:\PackageSource\OSD\OSImages_
 
 4. Paste the _install.wim_ to this folder.  Hyper-V will let you copy and paste files directly between host and VM.
 
-	![install_wim_on_sccm.png]({{site.baseurl}}/img/install_wim_on_sccm.png)
+	![install_wim_on_sccm.png](/img/300/install_wim_on_sccm.png)
 5. From the SCCM console expand the _Software Library_ -> _Operating Systems_ node.
 
 6. Right-click _Operating System Images_ and select _Add Operating System Image_.
@@ -428,15 +428,15 @@ We need an operating system image as the basis of OSD.  There are several guides
 
 8. **General** - Leave the default name, but type the Windows 10 build in the _Version_ field.  Click _Next_.
 
-	![os_image_wizard.png]({{site.baseurl}}/img/os_image_wizard.png)
+	![os_image_wizard.png](/img/300/os_image_wizard.png)
 9. At the _Summary_ screen, click _Next_.  At the _Completion_ screen, click _Close_.
 
 10. Right-click the OS image we just created and select _Distribute Content_.  At the _General_ screen click Next.
 
 11. **Content Destination** - Click _Add_ -> _Distribution Point_, and check _CM1.CORP.CONTOSO.COM_.  Click _OK_, then click _Next_.
 
-	![os_image_distribute_content.png]({{site.baseurl}}/img/os_image_distribute_content.png)
-	![os_image_distribute_content2.png]({{site.baseurl}}/img/os_image_distribute_content2.png)
+	![os_image_distribute_content.png](/img/300/os_image_distribute_content.png)
+	![os_image_distribute_content2.png](/img/300/os_image_distribute_content2.png)
 12. At the _Summary_ screen, click _Next_.  At the _Completion_ screen, click _Close_.
 
 ### The Boot Image
@@ -447,25 +447,25 @@ SCCM requires a WinPE image to initiate the task sequence.  This is a low level 
 
 3. **Customization tab** - Check _Enable command suppport (testing only)_.  This allows us to press F8 during the task sequence to bring up the command prompt, which is useful for troubleshooting.
 
-	![boot_image_customization.png]({{site.baseurl}}/img/boot_image_customization.png)
+	![boot_image_customization.png](/img/300/boot_image_customization.png)
     
 4. **Data Source tab** - Confirm that _Deploy this boot image from the PXE-enabled distribution point_ is already checked.  Click _OK_.
 	
-	![boot_image_confirm_pxe.PNG]({{site.baseurl}}/img/boot_image_confirm_pxe.PNG)
+	![boot_image_confirm_pxe.PNG](/img/300/boot_image_confirm_pxe.PNG)
 5. We'll be prompted to update the distribution points.  Click _Yes_, and the _Update Distribution Points Wizard_ will launch.
 
-	![boot_image_update_distribution_points.png]({{site.baseurl}}/img/boot_image_update_distribution_points.png)
+	![boot_image_update_distribution_points.png](/img/300/boot_image_update_distribution_points.png)
 5. At the _General_ screen, check _Reload this boot image with the current Windows PE version from the Windows ADK_.  Click _Next_.
 
-	![boot_image_update_wizard.PNG]({{site.baseurl}}/img/boot_image_update_wizard.PNG)
+	![boot_image_update_wizard.PNG](/img/300/boot_image_update_wizard.PNG)
 6. At the _Summary_ screen click Next.  At the _Completion_ screen click _Close_.
 
 7. We can now see _Boot image (x64)_ has a higher _OS Version_ but the _Version_ needs to be updated.
 
-	![boot_image_upgraded.png]({{site.baseurl}}/img/boot_image_upgraded.png)
+	![boot_image_upgraded.png](/img/300/boot_image_upgraded.png)
 8. Right-click _Boot image (x64)_ and select _Properties_.  Change the _Version_ to match the _OS Version_.
 
-	![boot_image_version.PNG]({{site.baseurl}}/img/boot_image_version.PNG)
+	![boot_image_version.PNG](/img/300/boot_image_version.PNG)
 #### Optionally Ricky Gao's guide creates a new _Configuration Manager Client_ package.  We will skip for our lab.
 
 
@@ -480,23 +480,23 @@ We can now create our Windows 10 task sequence and deploy it.
 
 4. Set the _Task sequence name_ to **Windows 10** and click _Browse_.  Select _Boot image (x64)_ and click _OK_.  Click _Next_
 
-	![ts_boot_image.PNG]({{site.baseurl}}/img/ts_boot_image.PNG)
-	![ts_information.png]({{site.baseurl}}/img/ts_information.png)
+	![ts_boot_image.PNG](/img/300/ts_boot_image.PNG)
+	![ts_information.png](/img/300/ts_information.png)
 5. For the _Image package_ click _Browse_ and select the OS image we created earlier.  If the image contains multiple indexes, choose Windows 10 Enterprise.  Click _Next_.
 
-	![ts_install_windows.png]({{site.baseurl}}/img/ts_install_windows.png)
+	![ts_install_windows.png](/img/300/ts_install_windows.png)
 6. Choose _Join a domain_.  For _Domain_ click _Browse_ and select _corp.contoso.com_.  Click _OK_.
 
-	![ts_select_domain.png]({{site.baseurl}}/img/ts_select_domain.png)
+	![ts_select_domain.png](/img/300/ts_select_domain.png)
 7. For _Domain OU_ click _Browse_.  Expand _CORP_ and choose the _Workstations_ OU we created earlier.  Click _OK_.
 
-	![select_workstations_OU.PNG]({{site.baseurl}}/img/select_workstations_OU.PNG)
+	![select_workstations_OU.PNG](/img/300/select_workstations_OU.PNG)
 8. For _Account_ click _Set_.  Set the _User name_ to **CORP\CM_DomainJoin** and enter **P@ssw0rd** as the _Password_.  Click _Verify_, and click _Test connection_.
 
-	![verify_domainjoin_account.PNG]({{site.baseurl}}/img/verify_domainjoin_account.PNG)
+	![verify_domainjoin_account.PNG](/img/300/verify_domainjoin_account.PNG)
 9. Click _OK_, click _OK_ again, and click _Next_.
 
-	![ts_configure_network.PNG]({{site.baseurl}}/img/ts_configure_network.PNG)
+	![ts_configure_network.PNG](/img/300/ts_configure_network.PNG)
 10. At the _Install the Configuration Manager client_ wizard, leave the default and click _Next_.
 
 11. Since we're doing a bare metal install, we don't need USMT.  Uncheck _Capture user settings_, uncheck _Capture network settings_, and uncheck _Capture Microsoft Windows settings_.  Click _Next_.
@@ -509,49 +509,49 @@ We need to deploy our task sequence to the _All Unknown Computers_ collection so
 
 2. For the _Collection_ click _Browse_.  Read the warning and click _OK_.  Select _All Unknown Computers_ and click _OK_.  Click _Next_.
 
-	![ts_deploy_available_pxe.png]({{site.baseurl}}/img/ts_deploy_available_pxe.png)
+	![ts_deploy_available_pxe.png](/img/300/ts_deploy_available_pxe.png)
 3. Leave the purpose as _Available_.  Set _Make available to the following_ to _Only media and PXE_ and click _Next_.
 
-	![ts_deploy_media_and_pxe.png]({{site.baseurl}}/img/ts_deploy_media_and_pxe.png)
+	![ts_deploy_media_and_pxe.png](/img/300/ts_deploy_media_and_pxe.png)
 4. 	Leave the rest of the wizard as default and click _Next_ until you reach the _Completion_ screen.  Click _Close_.
 
 ### Imaging
 It's time to test all our hard work.  We'll create a brand new VM and image it over PXE.
 1. On the host machine, open the Hyper-V console.  Right-click your host machine and select _New_ -> _Virtual Machine_.
 
-	![imaging_new_virtual_machine.PNG]({{site.baseurl}}/img/imaging_new_virtual_machine.PNG)
+	![imaging_new_virtual_machine.PNG](/img/300/imaging_new_virtual_machine.PNG)
 2. If _New Virtual Machine_ wizard takes you to the _Before You Begin_ screen, click _Next_.  Name the VM **HYD-WS1** and click _Next_.
 
-	![imaging_name.PNG]({{site.baseurl}}/img/imaging_name.PNG)
+	![imaging_name.PNG](/img/300/imaging_name.PNG)
 3. Select _Generation 2_.  This will make it UEFI based as opposed to BIOS, and allows us to do Secure Boot.  Click _Next_.
 
 4. Set the _Startup memory_ to **2048** or higher.  Click _Next_.
 
-	![imaging_memory.PNG]({{site.baseurl}}/img/imaging_memory.PNG)
+	![imaging_memory.PNG](/img/300/imaging_memory.PNG)
 5. Change the _Connection_ to our internal virtual switch _HYD-CorpNet_.  Click _Next_.
 
 6. Set the _Location_ to the large and fast drive where your other VMs are located.  Change the _Size_ to **64**GB.  Click _Next_.
 
-	![imaging_location.PNG]({{site.baseurl}}/img/imaging_location.PNG)
+	![imaging_location.PNG](/img/300/imaging_location.PNG)
 7. Set the installation option to _Install an operating system from a network-based installation server_.  Click _Next_.
 
 8. At the _Summary_ screen click _Finish_.
 
 9. In the Hyper-V console, right-click our new virtual machine _HYD-WS1_ and select _Settings_.  Click on _Security_, and check _Enable Trusted Platform Module_.  Click _OK_.
 
-	![imaging_settings.PNG]({{site.baseurl}}/img/imaging_settings.PNG)
+	![imaging_settings.PNG](/img/300/imaging_settings.PNG)
 10. **HIT THE SWITCH** - Open _HYD-WS1_ and click _Start_.  Since we're using an _Available_ deployment, we will need to press ENTER to PXE boot.
 
-	![imaging_pxe_boot.PNG]({{site.baseurl}}/img/imaging_pxe_boot.PNG)
+	![imaging_pxe_boot.PNG](/img/300/imaging_pxe_boot.PNG)
 11. The boot image will download and boot WinPE.  At the task sequence _Welcome_ screen, click _Next_.
 
-	![imaging_ts_wizard.PNG]({{site.baseurl}}/img/imaging_ts_wizard.PNG)
+	![imaging_ts_wizard.PNG](/img/300/imaging_ts_wizard.PNG)
 12. Select the _Windows 10_ task sequence we created earlier and click _Next_.
 
-	![imaging_ts_select.PNG]({{site.baseurl}}/img/imaging_ts_select.PNG)
+	![imaging_ts_select.PNG](/img/300/imaging_ts_select.PNG)
 13. Wait and watch as the task sequence performs each step.
 
-	![imaging_apply_os.PNG]({{site.baseurl}}/img/imaging_apply_os.PNG)
+	![imaging_apply_os.PNG](/img/300/imaging_apply_os.PNG)
 14. That's it, we've successfully deployed a bare metal workstation over PXE with SCCM.  Log into HYD-WS1 and verify that it's on the domain, BitLocker is on, and the Configuration Manager control panel is there.  Make note of the computer name, open the SCCM console on _HYD-CM1_ and confirm the new workstation shows up under _Devices_.
 
 #### Congratulations again!  Now, we have an SCCM environment we can populate with workstations to manipulate.
