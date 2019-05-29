@@ -62,6 +62,7 @@ We need an OU for our workstations to go.  While we could use the builtin Comput
 3. On the HYD-DC1, launch _Windows Powershell ISE_ as administrator.  Johan and Mikael have [created a script to set permissions](https://deploymentresearch.com/Research/Post/353/PowerShell-Script-to-set-permissions-in-Active-Directory-for-OSD) on the domain join account. This is so it can add computers to the _Workstations_ OU during OSD.
 
 4. Below is a [modified version of Johan and Mikael's script](https://github.com/dugmo/DRFiles/blob/master/Scripts/Set-OUPermissions.ps1) to suit our lab.  It will now create the account and OU if they haven't been manually created already.  Paste the code into the top script pane, and hit _F5_ to run
+
 ```powershell
 	<#
 	Updated:     2018-06-13 by Doug Seiler
