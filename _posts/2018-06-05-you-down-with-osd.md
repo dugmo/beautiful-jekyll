@@ -34,39 +34,18 @@ For a no frills (non-MDT) OSD setup, I'm quite partial to Ricky Gao's [step-by-s
 ## Active Directory and Windows ADK
 ### Active Directory Users and Computers
 We need an OU for our workstations to go.  While we could use the builtin Computers OU, that doesn't leave us any wiggle room later for things like applying Group Polices.
-#### Create the domain join account
-###### You may now skip creating the domain join account, it will be created with the Powershell script
-1. Log into the domain controller, HYD-DC1.
 
-2. Launch _Active Directory Users and Computers_.
-
-3. Right click the _Users_ OU, select _New_ -> _User_.
-
-	![new_user.PNG](/img/300/new_user.PNG)
-4. Leave _Initials_, _First name_, and _Last name_ blank.  For _User logon name_ and _Full name_, type **CM_DomainJoin**.  Click _Next_.
-
-	![CM_DomainJoin](/img/300/cm_domainjoin_userlogonname.PNG)
-5. Set the password to **P@ssw0rd**.  Uncheck _User must change password at next logon_ and check _Password never expires_.  Click _Next_, then click _Finish_.
-
-	![cm_domainjoin_password.PNG](/img/300/cm_domainjoin_password.PNG)
-    
-#### Ceate the Workstations OU and set permissions
-###### You may now skip creating the OU, it will be created with the Powershell script
-1. In the _Active Directory Users and Computers_ tool, right-click on the _CORP_ OU. Select _New_ -> _Organizational Unit_.
-
-	![new_ou.PNG](/img/300/new_ou.PNG)
-2. Name the container **Workstations** and click OK.
+1. Log into the domain controller, _HYD-DC1_.
 	
-    ![create_workstations_OU.PNG](/img/300/create_workstations_OU.PNG)
-3. On the HYD-DC1, launch _Windows Powershell ISE_ as administrator.  Johan and Mikael have [created a script to set permissions](https://deploymentresearch.com/Research/Post/353/PowerShell-Script-to-set-permissions-in-Active-Directory-for-OSD) on the domain join account. This is so it can add computers to the _Workstations_ OU during OSD.
+2. On the HYD-DC1, launch _Windows Powershell ISE_ as administrator.  Johan and Mikael have [created a script to set permissions](https://deploymentresearch.com/Research/Post/353/PowerShell-Script-to-set-permissions-in-Active-Directory-for-OSD) on the domain join account. This is so it can add computers to the _Workstations_ OU during OSD.
 
-4. Below is a [modified version of Johan and Mikael's script](https://github.com/dugmo/DRFiles/blob/master/Scripts/Set-OUPermissions.ps1) to suit our lab.  It will now create the account and OU if they haven't been manually created already.  Paste the code into the top script pane, and hit _F5_ to run.
+3. Below is a [modified version of Johan and Mikael's script](https://github.com/dugmo/DRFiles/blob/master/Scripts/Set-OUPermissions.ps1) to suit our lab.  It will now create the account and OU if they haven't been manually created already.  Paste the code into the top script pane, and hit _F5_ to run.
 
 	<script src="https://gist.github.com/dugmo/96d3efefd65a205e85694e2a2781c3b1.js"></script>
 
-5. When it prompts for _Account_, type **CM_DomainJoin**.  Hit enter.
+4. When it prompts for _Account_, type **CM_DomainJoin**.  Hit enter.
 
-6. When it prompts for _target OU_, type **Workstations**. Hit enter.
+5. When it prompts for _target OU_, type **Workstations**. Hit enter.
 
 	![domainjoin_permissions_script.PNG](/img/300/domainjoin_permissions_script.PNG)
     
