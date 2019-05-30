@@ -1,7 +1,7 @@
 ---
 layout: post
 published: true
-title: You down with OSD?
+title: You down with OSD TEST?
 date: '2018-06-05'
 subtitle: Yeah P.X.E.
 ---
