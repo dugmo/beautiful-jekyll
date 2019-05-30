@@ -64,6 +64,8 @@ We need an OU for our workstations to go.  While we could use the builtin Comput
 
 <script src="https://gist.github.com/dugmo/96d3efefd65a205e85694e2a2781c3b1.js"></script>
 
+{% gist 96d3efefd65a205e85694e2a2781c3b1 %}
+
 5. When it prompts for _Account_, type **CM_DomainJoin**.  Hit enter.
 
 6. When it prompts for _target OU_, type **Workstations**. Hit enter.
