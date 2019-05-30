@@ -50,18 +50,25 @@ We need an OU for our workstations to go.  While we could use the builtin Comput
 	![domainjoin_permissions_script.PNG](/img/300/domainjoin_permissions_script.PNG)
     
 ### The Windows Assessment and Deployment Kit
-We ended the [SCCM lab setup](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/) by updating to the latest version of Current Branch.  So we'll need to install the latest version of the Windows ADK so we're fully compatible deploying the current version of Windows 10.
+We ended the [SCCM lab setup](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/) by updating to the latest version of Current Branch (or the latest [tech preview](https://doug.seiler.us/2019-05-27-tech-preview-lab-kit/)).  So we'll need to install the latest version of the Windows ADK so we're fully compatible deploying the current version of Windows 10.
 1. Log into the SCCM server, HYD-CM1.
 
-2. Open the _Programs and Features_ control panel, and uninstall the existing Windows Assessment and Deployment Kit - Windows 10.
+2. Open the _Programs and Features_ control panel, and uninstall the existing _Windows Assessment and Deployment Kit - Windows 10_.
 
 	![uninstall_adk.PNG](/img/300/uninstall_adk.PNG)
-3. Download the [Windows ADK](https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install) and run it.  Jonathan Lefebvre of the System Center Dudes has a [great guide on setting up the ADK](https://www.systemcenterdudes.com/how-to-update-windows-adk-on-a-sccm-server/) for SCCM.
 
-4. Accept the defaults until we reach the _Select the features you want to install_ section.  Uncheck everything except _Deployment Tools_, _Windows Preinstallation Environment (Windows PE)_, and _User State Migration Tool (USMT)_.  Click _Install_.
+3. Uninstall the existing _Windows Assessment and Deployment Kit Windows Preinstallation Environment Add-ons - Windows 10_.  Reboot _HYD-CM1_.
+
+	![uninstall_adk_winpe.PNG](/img/300/uninstall_adk_winpe.PNG)
+4. On the host system, download the latest [Windows ADK](https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install) and Windows PE add-on for the ADK.  Jonathan Lefebvre of the System Center Dudes has a [great guide on setting up the ADK](https://www.systemcenterdudes.com/how-to-update-windows-adk-on-a-sccm-server/) for SCCM.  Copy _adksetup.exe_ and _adkwinpesetup.exe_ to _HYD-CM1_.
+
+5. Run _adksetup.exe_.  Accept the defaults and click _Next_ until we reach the _Select the features you want to install_ section.  Uncheck everything except _Deployment Tools_ and _User State Migration Tool (USMT)_.  Click _Install_.  When it completes, click _Close_.
 
 	![windows_adk_features.PNG](/img/300/windows_adk_features.PNG)
-5. Once the install is complete, click _Close_.  Reboot the SCCM server.
+6. Run _adkwinpesetup.exe_.  Accept all defaults again at each screen and install.  When the install completes, click _Close_.
+
+	![windows_adkwinpe_complete.PNG](/img/300/windows_adkwinpe_complete.PNG)
+7. Once the install is complete, click _Close_.  Reboot the SCCM server.
 
 
 ## PXE
@@ -73,19 +80,25 @@ Boundaries and Boundary groups are how we logically define which sites (servers)
 
 3. Right-click _Boundaries_ and select _Create Boundary_.
 
-4. **General tab** - Set description to **PXE**.  Change _Type_ to **IP address range**.  We will use the DHCP range from the domain controller.  Set _Starting IP address_ to **10.0.0.100** and set _Ending IP address_ to **10.0.0.200**.
+4. **General tab** - Set description to **PXE**.  Change _Type_ to **IP address range**.  We will use the DHCP range from the domain controller.  Set _Starting IP address_ to **10.0.0.100** and set _Ending IP address_ to **10.0.0.200**.  Click _OK_.
 
 	![create_boundary.png](/img/300/create_boundary.png)
     
 	For reference, here is what the DHCP address pool looks like:
     
     ![dhcp_scope.png](/img/300/dhcp_scope.png)
-5. **Boundary Groups tab** - Select the _Boundary Groups_ tab. Click _Add_.  Check _Corp Boundary Group_ and click _OK_.  Click _OK_ again to create the boundary.
+5. Expand the _Administration_ -> _Hierarchy Configuration_ node and select _Boundary Groups_.  The [current branch lab](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/) we set up has the boundary group configured already.  If we're using the [tech preview lab](https://doug.seiler.us/2019-05-27-tech-preview-lab-kit/), we need to create the boundary group manually.
+
+6. If the _Corp Boundary Group_ doesn't exist yet, click _Create Boundary Group_.  Set the name and description to **Corp Boundary Group**.  If it does exist, right-click it and select _Properties_.
+
+7. **General Tab** - Under _Boundaries..._ click _Add..._ and check our _PXE_ boundary.  Click _OK_.  Select the _References_ tab.
 
 	![create_boundary_group.png](/img/300/create_boundary_group.png)
-6. The Microsoft lab already has the boundary group created and configured, but we'll just verify the settings.  Click on _Boundary Groups_, right-click _Corp Boundary Group_ and select _Properties_.  Select the _References_ tab and confirm that _User this boundary group for site assignment_ is checked.
+8. **References Tab** - If there are not _Site system servers_ listed, click _Add_ and check _CHQ_.  Click _OK_.  Make sure _Use this boundary group for site assignment_ is checked and click _OK_.
 
+	![confirm_boundarygroup_references.png](/img/300/confirm_boundarygroup_references.png)
 	![confirm_boundary_group.PNG](/img/300/confirm_boundary_group.PNG)
+
 
 ### The Distribution Point
 In SCCM, distribution points are where workstations get their content.  This is true for OSD as well, and we need our DPs to function as PXE servers.
