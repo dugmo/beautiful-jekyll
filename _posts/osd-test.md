@@ -1,6 +1,6 @@
 ---
 layout: post
-published: false
+published: true
 title: You down with OSD?
 date: '2018-06-05'
 subtitle: Yeah P.X.E.
