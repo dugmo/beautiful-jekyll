@@ -86,7 +86,7 @@ Boundaries and Boundary groups are how we logically define which sites (servers)
     
 	For reference, here is what the DHCP address pool looks like:
     
-    ![dhcp_scope.png](/img/300/dhcp_scope.PNG)
+    ![dhcp_scope.PNG](/img/300/dhcp_scope.PNG)
 5. Expand the _Administration_ -> _Hierarchy Configuration_ node and select _Boundary Groups_.  The [current branch lab](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/) we set up has the boundary group configured already.  If we're using the [tech preview lab](https://doug.seiler.us/2019-05-27-tech-preview-lab-kit/), we need to create the boundary group manually.
 
 6. If the _Corp Boundary Group_ doesn't exist yet, click _Create Boundary Group_.  Set the name and description to **Corp Boundary Group**.  If it does exist, right-click it and select _Properties_.
@@ -98,7 +98,7 @@ Boundaries and Boundary groups are how we logically define which sites (servers)
 
 	![confirm_boundarygroup_references.png](/img/300/confirm_boundarygroup_references.png)
 
-	![confirm_boundary_group.PNG](/img/300/confirm_boundary_group.png)
+	![confirm_boundary_group.png](/img/300/confirm_boundary_group.png)
 
 
 ### The Distribution Point
