@@ -113,7 +113,9 @@ In SCCM, distribution points are where workstations get their content.  This is 
 4. **Communication tab** - If we're using the Tech Preview, the _Allow clients to connect anonymously_ is on the _Communication_ tab.  Check it.
 
 	![dp_general_tab.png](/img/300/dp_general_tab.png)
-5. **PXE tab** - To automatically install WDS and configure PXE, check _Enable PXE support for clients_ and click _Yes_ when the _Review Required Ports for PXE_ warning dialog pops up.  Additionally check _Allow this distribution point to respond to incoming PXE requests_ **AND** _Enable unknown computer support_, click _OK_ when the _Configuration Manager_ dialog box pops up.  Uncheck _Require a password when computers use PXE_.  Click _OK_.
+5. **PXE tab** - To automatically install WDS and configure PXE, check _Enable PXE support for clients_ and click _Yes_ when the _Review Required Ports for PXE_ warning dialog pops up.  
+	Additionally check _Allow this distribution point to respond to incoming PXE requests_ **AND** _Enable unknown computer support_, click _OK_ when the _Configuration Manager_ dialog box pops up.  
+	Uncheck _Require a password when computers use PXE_.  Click _OK_.
 
 	![dp_pxe_tab.png](/img/300/dp_pxe_tab.png)
 
