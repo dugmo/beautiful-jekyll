@@ -51,7 +51,7 @@ We need an OU for our workstations to go.  While we could use the builtin Comput
     
 ### The Windows Assessment and Deployment Kit
 We ended the [SCCM lab setup](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/) by updating to the latest version of Current Branch (or the latest [tech preview](https://doug.seiler.us/2019-05-27-tech-preview-lab-kit/)).  So we'll need to install the latest version of the Windows ADK so we're fully compatible deploying the current version of Windows 10.
-1. Log into the SCCM server, HYD-CM1.
+1. Log into the SCCM server, _HYD-CM1_.
 
 2. Open the _Programs and Features_ control panel, and uninstall the existing _Windows Assessment and Deployment Kit - Windows 10_.
 
@@ -74,7 +74,7 @@ We ended the [SCCM lab setup](https://doug.seiler.us/2018-05-30-set-up-the-sccm-
 ## PXE
 ### The Boundary
 Boundaries and Boundary groups are how we logically define which sites (servers) workstations use.  For the lab, we only need to configure one boundary and boundary group.
-1. Log into the SCCM server, HYD-CM1.
+1. Log into the SCCM server, _HYD-CM1_.
 
 2. In the SCCM console, expand the _Administration_ -> _Hierarchy Configuration_ node.
 
@@ -110,7 +110,7 @@ In SCCM, distribution points are where workstations get their content.  This is 
 3. **General tab** - If we're using SCCM Current Branch, leave _HTTP_ selected and check _Allow clients to connect anonymously_.
 
 	![dp_general_tab.png](/img/300/dp_general_tab.png)
-4. **Communication tab** - If we're using the Tech Preview, the _Allow clients to connect anonymously_ is on the _Communication_ tab.  Check it.
+4. **Communication tab** - If we're using the Tech Preview, the _Allow clients to connect anonymously_ option is on the _Communication_ tab.  Check it.
 
 	![dp_general_tab.png](/img/300/dp_general_tab.png)
 5. **PXE tab** - To automatically install WDS and configure PXE, check _Enable PXE support for clients_ and click _Yes_ when the _Review Required Ports for PXE_ warning dialog pops up.  
