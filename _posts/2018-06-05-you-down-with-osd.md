@@ -14,7 +14,7 @@ In this post we'll do a minimalistic configuration of OSD over PXE.  This means 
 [Windows and Office Deployment Lab Kit](https://www.microsoft.com/en-us/evalcenter/evaluate-lab-kit) does a couple convenient configurations if we're using the Current Branch lab we configured in the [previous post](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/).  If we're using the [tech preview lab](https://doug.seiler.us/2019-05-27-tech-preview-lab-kit/) we will need to do some additional set up.
 
 ### The Requirements
-1. A Windows 10 Enterprise ISO.
+1. A Windows 10 Enterprise 64-bit ISO.
 
 2. The latest [Windows Assessment and Deployment Kit](https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install) and the Windows PE add-on for the ADK.
 
@@ -114,7 +114,9 @@ In SCCM, distribution points are where workstations get their content.  This is 
 
 	![dp_general_tab.png](/img/300/dp_general_tab.png)
 5. **PXE tab** - To automatically install WDS and configure PXE, check _Enable PXE support for clients_ and click _Yes_ when the _Review Required Ports for PXE_ warning dialog pops up.  
+	
 	Additionally check _Allow this distribution point to respond to incoming PXE requests_ **AND** _Enable unknown computer support_, click _OK_ when the _Configuration Manager_ dialog box pops up.  
+	
 	Uncheck _Require a password when computers use PXE_.  Click _OK_.
 
 	![dp_pxe_tab.png](/img/300/dp_pxe_tab.png)
@@ -129,64 +131,75 @@ We'll use [Odd-Magne's script](https://sccmguru.wordpress.com/2012/10/25/configu
 
 	<script src="https://gist.github.com/dugmo/150e1015ed989286b5a4480a5e3ba87b.js"></script>
 
+	![package_source_script.png](/img/300/package_source_script.png)
+
+
 ### The Operating System Image
 We need an operating system image as the basis of OSD.  There are several guides on creating a fully patched reference image, but we're just going to use the WIM file off of the ISO for now and revisit reference images in a later tutorial.
-1. On the host system, mount the Windows 10 Enterprise (or Pro) ISO.  If your host system is Windows 10 you can just double click the ISO.
+1. On the host system, mount the Windows 10 Enterprise ISO.  If your host system is Windows 10 you can just double click the ISO.
 
-2. Navigate to the sources folder, right-click _install.wim_ and select _copy_.
+2. Right-click the drive letter of the mounted ISO, and select _Properties_.
+
+	![mounted_iso_properties.png](/img/300/mounted_iso_properties.png)
+3. **Sharing tab** - Click _Advanced Sharing_.  Check _Share this folder_ and note the _Share name_.  Click _OK_.  Click _Close_.
+
+	![mounted_iso_sharing.png](/img/300/mounted_iso_sharing.png)	
+4. On _HYD-CM1_ (the SCCM server) navigate to **\\\\\<host system name>\\\<share name>\\sources**.  Right-click _install.wim_ and select _copy_.
 
 	![install_wim.png](/img/300/install_wim.png)
-3. On HYD-CM1 (the SCCM server) navigate to _C:\PackageSource\OSD\OSImages_
-
-4. Paste the _install.wim_ to this folder.  Hyper-V will let you copy and paste files directly between host and VM.
+5. Navigate to _C:\PackageSource\OSD\OSImages_ and paste the _install.wim_ to this folder.
 
 	![install_wim_on_sccm.png](/img/300/install_wim_on_sccm.png)
-5. From the SCCM console expand the _Software Library_ -> _Operating Systems_ node.
+6. From the SCCM console expand the _Software Library_ -> _Operating Systems_ node.
 
-6. Right-click _Operating System Images_ and select _Add Operating System Image_.
+7. Right-click _Operating System Images_ and select _Add Operating System Image_.
 
-7. **Data Source** - In the path field type **\\\cm1\PackageSource\OSD\OSImages\install.wim** and click _Next_.
+8. **Data Source** - In the path field type **\\\cm1\PackageSource\OSD\OSImages\install.wim**.  Check _Extract a specific image index from the specified WIM file_ and select image index _3 - Windows 10 Enterprise_.
+If we're using the Tech Preview, select _x64_ and click _Next_.
 
-8. **General** - Leave the default name, but type the Windows 10 build in the _Version_ field.  Click _Next_.
+	![os_image_datasource.png](/img/300/os_image_datasource.png)
+9. **General** - Set the name to **Windows 10 Enterprise**. Type the Windows 10 build in the _Version_ field.  Optionally we can add a comment.  Click _Next_.
 
 	![os_image_wizard.png](/img/300/os_image_wizard.png)
-9. At the _Summary_ screen, click _Next_.  At the _Completion_ screen, click _Close_.
+10. At the _Summary_ screen, click _Next_.  At the _Completion_ screen, click _Close_.
 
-10. Right-click the OS image we just created and select _Distribute Content_.  At the _General_ screen click Next.
+11. Right-click the OS image we just created and select _Distribute Content_.  At the _General_ screen click Next.
 
-11. **Content Destination** - Click _Add_ -> _Distribution Point_, and check _CM1.CORP.CONTOSO.COM_.  Click _OK_, then click _Next_.
+12. **Content Destination** - Click _Add_ -> _Distribution Point_, and check _CM1.CORP.CONTOSO.COM_.  Click _OK_, then click _Next_.
 
 	![os_image_distribute_content.png](/img/300/os_image_distribute_content.png)
 	![os_image_distribute_content2.png](/img/300/os_image_distribute_content2.png)
-12. At the _Summary_ screen, click _Next_.  At the _Completion_ screen, click _Close_.
+13. At the _Summary_ screen, click _Next_.  At the _Completion_ screen, click _Close_.
 
 ### The Boot Image
 SCCM requires a WinPE image to initiate the task sequence.  This is a low level Windows OS that runs in the beginning of a task sequence when we PXE boot.
 1. From the SCCM console, expand the _Software Library_ -> _Operating Systems_ node.
 
-2. Click on _Boot Images_.  Right click _Boot image (x64)_ and select _Properties_.
+2. Click on _Boot Images_.  If we're using the [Tech Preview lab](https://doug.seiler.us/2019-05-27-tech-preview-lab-kit/), right-click the boot image and select _Distribute Content_. Just like with the OS image, at the _Content Destination_ wizard click _Add_ and select _Distribution Point_.  Check CM1.CORP.CONTOSO.COM and click _OK_.  Click _Next_.  At the _Summary_ screen click _Next_. At the _Completion_ screen click _Close_.
 
-3. **Customization tab** - Check _Enable command suppport (testing only)_.  This allows us to press F8 during the task sequence to bring up the command prompt, which is useful for troubleshooting.
-
-	![boot_image_customization.png](/img/300/boot_image_customization.png)
-    
-4. **Data Source tab** - Confirm that _Deploy this boot image from the PXE-enabled distribution point_ is already checked.  Click _OK_.
+	If we're using the [Current Branch lab](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/) the boot images are already distributed. Right-click _Boot image (x64)_ and select _Update Distribution Points_.  
 	
-	![boot_image_confirm_pxe.PNG](/img/300/boot_image_confirm_pxe.PNG)
-5. We'll be prompted to update the distribution points.  Click _Yes_, and the _Update Distribution Points Wizard_ will launch.
-
-	![boot_image_update_distribution_points.png](/img/300/boot_image_update_distribution_points.png)
-5. At the _General_ screen, check _Reload this boot image with the current Windows PE version from the Windows ADK_.  Click _Next_.
+	Check _Reload this boot image with the current Windows PE version from the Windows ADK_.  Click _Next_.  At the _Summary_ screen click _Next_.  At the _Completion_ screen click _Close_.
 
 	![boot_image_update_wizard.PNG](/img/300/boot_image_update_wizard.PNG)
-6. At the _Summary_ screen click Next.  At the _Completion_ screen click _Close_.
-
-7. We can now see _Boot image (x64)_ has a higher _OS Version_ but the _Version_ needs to be updated.
-
-	![boot_image_upgraded.png](/img/300/boot_image_upgraded.png)
-8. Right-click _Boot image (x64)_ and select _Properties_.  Change the _Version_ to match the _OS Version_.
+4. **General tab** - Right-click _Boot image (x64)_ and select _Properties_.  Set the _Version_ to the ADK _OS Version_.
 
 	![boot_image_version.PNG](/img/300/boot_image_version.PNG)
+5. **Customization tab** - Check _Enable command suppport (testing only)_.  This allows us to press F8 during the task sequence to bring up the command prompt, which is useful for troubleshooting.
+
+	![boot_image_customization.png](/img/300/boot_image_customization.png)
+6. **Data Source tab** - Confirm that _Deploy this boot image from the PXE-enabled distribution point_ is already checked.  If we're using the Tech Preview lab, select _x64_.  Click _OK_.
+	
+	![boot_image_confirm_pxe.PNG](/img/300/boot_image_confirm_pxe.PNG)
+7. We'll be prompted to update the distribution points.  Click _Yes_, and the _Update Distribution Points Wizard_ will launch.
+
+	![boot_image_update_distribution_points.png](/img/300/boot_image_update_distribution_points.png)
+
+8. When the wizard launches, click _Next_.  At the _Summary_ screen click _Next_ again.  At the _Completion_ screen click _Close_.
+
+9. Repeat steps 2-8 with _Boot image (x86)_.
+
+
 #### Optionally Ricky Gao's guide creates a new _Configuration Manager Client_ package.  We will skip for our lab.
 
 
