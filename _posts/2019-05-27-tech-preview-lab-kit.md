@@ -126,3 +126,4 @@ We can use the [Windows and Office Deployment Lab Kit](https://www.microsoft.com
 10. Close the SCCM console and relaunch it.  We will be prompted to upgrade the console to the new version. Click _OK_, and if prompted for elevation click _OK_ again.
 
 #### Congratulations!  We now have a functional SCCM tech preview environment we can configure and customize.
+**Next up** - [Operating System Deployment over PXE](https://doug.seiler.us/2018-06-05-you-down-with-osd/)
