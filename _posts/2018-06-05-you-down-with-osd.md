@@ -107,10 +107,13 @@ In SCCM, distribution points are where workstations get their content.  This is 
 
 2. Right-click _CM1.CORP.CONTOSO.COM_ and select _Properties_.
 
-3. **General tab** - Leave _HTTP_ selected and check _Allow clients to connect anonymously_.
+3. **General tab** - If we're using SCCM Current Branch, leave _HTTP_ selected and check _Allow clients to connect anonymously_.
 
 	![dp_general_tab.png](/img/300/dp_general_tab.png)
-4. **PXE tab** - To automatically install WDS and configure PXE, check _Enable PXE support for clients_.  Additionally check _Allow this distribution point to respond to incoming PXE requests_ **AND** _Enable unknown computer support_.  Uncheck _Require a password when computers use PXE_ and click _OK_.
+4. **Communication tab** - If we're using the Tech Preview, the _Allow clients to connect anonymously_ is on the _Communication_ tab.  Check it.
+
+	![dp_general_tab.png](/img/300/dp_general_tab.png)
+5. **PXE tab** - To automatically install WDS and configure PXE, check _Enable PXE support for clients_ and click _Yes_ when the _Review Required Ports for PXE_ warning dialog pops up.  Additionally check _Allow this distribution point to respond to incoming PXE requests_ **AND** _Enable unknown computer support_, click _OK_ when the _Configuration Manager_ dialog box pops up.  Uncheck _Require a password when computers use PXE_.  Click _OK_.
 
 	![dp_pxe_tab.png](/img/300/dp_pxe_tab.png)
 
@@ -121,156 +124,8 @@ We'll use [Odd-Magne's script](https://sccmguru.wordpress.com/2012/10/25/configu
 1. On the SCCM server, launch Windows Powershell ISE as administrator.
 
 2. In the top script pane, paste the following code.  The script is customized to our folder path and network access account name.  Press _F5_ to run.
-```powershell
-	#Set the Following Parameters
-	$Source = 'C:\PackageSource'
-	$ShareName = 'PackageSource'
-	$NetworkAccount = 'CORP\CM_NetAcc'
 
-	#Create Source Directory
-	New-Item -ItemType Directory -Path "$Source"
-
-
-	#Create Application Directory Structure
-	New-Item -ItemType Directory -Path "$Source\Applications"
-	New-Item -ItemType Directory -Path "$Source\Applications\Adobe"
-	New-Item -ItemType Directory -Path "$Source\Applications\Apple"
-	New-Item -ItemType Directory -Path "$Source\Applications\Citrix"
-	New-Item -ItemType Directory -Path "$Source\Applications\Microsoft"
-
-	#Create App-V Directory Structure
-	New-Item -ItemType Directory -Path "$Source\App-V"
-	New-Item -ItemType Directory -Path "$Source\App-V\Packages"
-	New-Item -ItemType Directory -Path "$Source\App-V\Source"
-
-	#Create Hardware Application Directory Structure
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\Dell"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\Dell\Latitude E6510"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\Dell\Latitude E6510\x86"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\Dell\Latitude E6510\x64"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\HP"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\HP\EliteBook 8470p"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\HP\EliteBook 8470p\x86"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\HP\EliteBook 8470p\x64"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\Lenovo"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\Lenovo\X1 Carbon"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\Lenovo\X1 Carbon\x86"
-	New-Item -ItemType Directory -Path "$Source\HardwareApplications\Lenovo\X1 Carbon\x64"
-
-	#Create Hotfix Directory Structure
-	New-Item -ItemType Directory -Path "$Source\Hotfix"
-
-	#Create Import Directory Structure
-	New-Item -ItemType Directory -Path "$Source\Import"
-	New-Item -ItemType Directory -Path "$Source\Import\Baselines"
-	New-Item -ItemType Directory -Path "$Source\Import\MOFs"
-	New-Item -ItemType Directory -Path "$Source\Import\Task Sequences"
-
-	#Create Log Directory Structure
-	New-Item -ItemType Directory -Path "$Source\Logs"
-	New-Item -ItemType Directory -Path "$Source\Logs\MDTLogs"
-	New-Item -ItemType Directory -Path "$Source\Logs\MDTLogsDL"
-
-	#Create OSD Directory Structure
-	New-Item -ItemType Directory -Path "$Source\OSD"
-	New-Item -ItemType Directory -Path "$Source\OSD\BootImages"
-	New-Item -ItemType Directory -Path "$Source\OSD\Branding"
-	New-Item -ItemType Directory -Path "$Source\OSD\Branding\WinPE Background"
-	New-Item -ItemType Directory -Path "$Source\OSD\Captures"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 7 x86"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 7 x86\Dell"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 7 x86\HP"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 7 x86\Lenovo"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 7 x86\VMWare"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 7 x64"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 7 x64\Dell"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 7 x64\HP"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 7 x64\Lenovo"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 7 x64\VMWare"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 8 x64"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 8 x64\Dell"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 8 x64\HP"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 8 x64\Lenovo"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverPackages\Windows 8 x64\VMWare"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 7 x86"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 7 x86\Dell"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 7 x86\HP"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 7 x86\Lenovo"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 7 x86\VMWare"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 7 x64"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 7 x64\Dell"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 7 x64\HP"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 7 x64\Lenovo"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 7 x64\VMWare"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 8 x64"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 8 x64\Dell"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 8 x64\HP"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 8 x64\Lenovo"
-	New-Item -ItemType Directory -Path "$Source\OSD\DriverSources\Windows 8 x64\VMWare"
-	New-Item -ItemType Directory -Path "$Source\OSD\MDTSettings"
-	New-Item -ItemType Directory -Path "$Source\OSD\MDTToolkit"
-	New-Item -ItemType Directory -Path "$Source\OSD\OSImages"
-	New-Item -ItemType Directory -Path "$Source\OSD\OSInstall"
-	New-Item -ItemType Directory -Path "$Source\OSD\Prestart"
-	New-Item -ItemType Directory -Path "$Source\OSD\USMT"
-
-	#Create Script Directory Structure
-	New-Item -ItemType Directory -Path "$Source\Script"
-
-	#Create State Capture Directory Structure
-	New-Item -ItemType Directory -Path "$Source\StateCapture"
-
-	#Create Tools Directory Structure
-	New-Item -ItemType Directory -Path "$Source\Tools"
-	New-Item -ItemType Directory -Path "$Source\Tools\PSTools"
-
-	#Create Windows Update Directory Structure
-	New-Item -ItemType Directory -Path "$Source\WindowsUpdates"
-	New-Item -ItemType Directory -Path "$Source\WindowsUpdates\Endpoint Protection"
-	New-Item -ItemType Directory -Path "$Source\WindowsUpdates\Lync 2010"
-	New-Item -ItemType Directory -Path "$Source\WindowsUpdates\Office 2010"
-	New-Item -ItemType Directory -Path "$Source\WindowsUpdates\Silverlight"
-	New-Item -ItemType Directory -Path "$Source\WindowsUpdates\Visual Studio 2008"
-	New-Item -ItemType Directory -Path "$Source\WindowsUpdates\Windows 7"
-	New-Item -ItemType Directory -Path "$Source\WindowsUpdates\Windows 8"
-
-	#Create WSUS Directory
-	New-Item -ItemType Directory -Path "$Source\WSUS"
-	New-Item -ItemType Directory -Path "$Source\WSUS\SCCMDeploymentPackages"
-
-	#Create the Share and Permissions
-	New-SmbShare -Name "$ShareName” -Path “$Source” -CachingMode None -FullAccess Everyone
-	New-SmbShare -Name "SCCMDeploymentPackages” -Path "$Source\WSUS\SCCMDeploymentPackages" -CachingMode None -FullAccess $NetworkAccount,"NETWORK SERVICE"
-
-	#Set Security Permissions
-	$Acl = Get-Acl "$Source\Logs"
-	$Ar = New-Object System.Security.AccessControl.FileSystemAccessRule("$NetworkAccount","FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
-	$Acl.SetAccessRule($Ar)
-	Set-Acl "$Source\Logs" $Acl
-
-	$Acl = Get-Acl "$Source\OSD\Captures"
-	$Ar = New-Object System.Security.AccessControl.FileSystemAccessRule("$NetworkAccount","FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
-	$Acl.SetAccessRule($Ar)
-	Set-Acl "$Source\OSD\Captures" $Acl
-
-	$Acl = Get-Acl "$Source\StateCapture"
-	$Ar = New-Object System.Security.AccessControl.FileSystemAccessRule("LOCALSERVICE","FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
-	$Acl.SetAccessRule($Ar)
-	Set-Acl "$Source\StateCapture" $Acl
-
-	$Acl = Get-Acl "$Source\WSUS"
-	$Ar = New-Object System.Security.AccessControl.FileSystemAccessRule("$NetworkAccount","FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
-	$Acl.SetAccessRule($Ar)
-	Set-Acl "$Source\WSUS" $Acl
-
-	$Acl = Get-Acl "$Source\WSUS"
-	$Ar = New-Object System.Security.AccessControl.FileSystemAccessRule("NETWORK SERVICE","FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
-	$Acl.SetAccessRule($Ar)
-	Set-Acl "$Source\WSUS" $Acl
-```
+	<script src="https://gist.github.com/dugmo/150e1015ed989286b5a4480a5e3ba87b.js"></script>
 
 ### The Operating System Image
 We need an operating system image as the basis of OSD.  There are several guides on creating a fully patched reference image, but we're just going to use the WIM file off of the ISO for now and revisit reference images in a later tutorial.
