@@ -5,7 +5,7 @@ title: You down with OSD?
 date: '2018-06-05'
 subtitle: Yeah P.X.E.
 ---
-######  Updated: 5/30/2019
+######  Updated: 6/1/2019
 ## Operating System Deployment over PXE boot
 Operating system deployment is a core functionality of SCCM.  While there are other ways to deploy Windows 10, all the tools we need to configure the OS are already in SCCM.  Being able to bring it all together makes OSD in SCCM flexible, powerful, and simple.
 
