@@ -104,7 +104,8 @@ Refer to the [**troubleshooting**](https://doug.seiler.us/2018-05-30-set-up-the-
 ### Troubleshooting
 
 ###### If there are any obstacles during set up, we can try some of these troubleshooting tips
-1. **Firewall** - If you cannot ping 8.8.8.8, we don't have access to the internet.  From CM1, try pinging DC1 at 10.0.0.6.  If that works, try pinging the NAT gateway at 10.0.0.254.  If that doesn't work, try temporarily disabling the firewall as that might be blocking access.  You may need to remove and redo the NAT networking as well, so run the following command in an elevated Powershell terminal:
+1. **Firewall** - If you cannot ping 8.8.8.8, we don't have access to the internet.  From CM1, try pinging DC1 at 10.0.0.6.  If that works, try pinging the NAT gateway at 10.0.0.254.  If that doesn't work, try temporarily disabling the firewall as that might be blocking access.  
+You may need to remove and redo the NAT networking as well, so run the following command in an elevated Powershell terminal:
 ```powershell
     Remove-NetIPAddress -IPAddress 10.0.0.254
     Remove-NetNat
@@ -114,7 +115,8 @@ Refer to the [**troubleshooting**](https://doug.seiler.us/2018-05-30-set-up-the-
 ```
 2. **NAT** - If you can ping 10.0.0.254 but STILL can't ping 8.8.8.8, make sure HYD-GW1 is powered off.  If it is, the issue is on the host system.  From the host system, ping CM1 at 10.0.0.7 to confirm NAT is working.  If NAT is working, from CM1 ping the host IP of the physical adapter.
 
-3. **Subnet** - The lab network is 10.0.0.0/24.  If our home network is also on 10.0.0.0/24 we'll have trouble getting out.  We will either need to ditch the NAT and rely on GW1, or re-IP DC1 and CM1 and our NAT configuration on a different network.  Just keep in mind in subsequent blog posts we'll need to adjust networking respectively.  For example if you wanted to change the lab from the default 10.0.0.0/24 network to a 10.11.12.0/24 network, change the CM1 IP to 10.11.12.7 and the DC1 IP to 10.11.12.6.  Remove the NAT config and make a new one on that network like so:
+3. **Subnet** - The lab network is 10.0.0.0/24.  If our home network is also on 10.0.0.0/24 we'll have trouble getting out.  We will either need to ditch the NAT and rely on GW1, or re-IP DC1 and CM1 and our NAT configuration on a different network.  Just keep in mind in subsequent blog posts we'll need to adjust networking respectively.  
+For example if you wanted to change the lab from the default 10.0.0.0/24 network to a 10.11.12.0/24 network, change the CM1 IP to 10.11.12.7 and the DC1 IP to 10.11.12.6.  Remove the NAT config and make a new one on that network like so:
 ```powershell
     Remove-NetIPAddress -IPAddress 10.0.0.254
     Remove-NetNat
