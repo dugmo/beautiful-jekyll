@@ -102,6 +102,7 @@ Refer to the [**troubleshooting**](https://doug.seiler.us/2018-05-30-set-up-the-
 **Next up** - [Operating System Deployment over PXE](https://doug.seiler.us/2018-06-05-you-down-with-osd/)
 
 ### Troubleshooting
+
 ###### If there are any obstacles during set up, we can try some of these troubleshooting tips
 1. **Firewall** - If you cannot ping 8.8.8.8, we don't have access to the internet.  From CM1, try pinging DC1 at 10.0.0.6.  If that works, try pinging the NAT gateway at 10.0.0.254.  If that doesn't work, try temporarily disabling the firewall as that might be blocking access.  You may need to remove and redo the NAT networking as well, so run the following command in an elevated Powershell terminal:
 ```powershell
