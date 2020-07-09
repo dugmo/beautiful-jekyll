@@ -67,7 +67,7 @@ However, at MMS [Steve Jesok](https://twitter.com/sejesok) pointed out that Micr
 4. Give HYD-CM1 another moment for services to start up.  Launch the _Microsoft Endpoint Manager Configuration Manager Console_ and confirm that it loads successfully.
 
     ![memcm_console.png](/img/200/memcm_console.png)
-###### Refer to the troubleshooting section if anything isn't working at this point
+###### Refer to the [**troubleshooting**](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/#Troubleshooting) section if anything isn't working at this point
 [**Troubleshooting**](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/#Troubleshooting)
 
 ### The Finishing Touch
@@ -101,7 +101,7 @@ However, at MMS [Steve Jesok](https://twitter.com/sejesok) pointed out that Micr
 #### Congratulations!  We now have a functional MEMCM environment we can configure and customize.
 **Next up** - [Operating System Deployment over PXE](https://doug.seiler.us/2018-06-05-you-down-with-osd/)
 
-### Troubleshooting
+## Troubleshooting
 ###### If there are any obstacles during set up, we can try some of these troubleshooting tips
 1. **Firewall** - If you cannot ping 8.8.8.8, we don't have access to the internet.  From CM1, try pinging DC1 at 10.0.0.6.  If that works, try pinging the NAT gateway at 10.0.0.254.  If that doesn't work, try temporarily disabling the firewall as that might be blocking access.  You may need to remove and redo the NAT networking as well, so run the following command in an elevated Powershell terminal:
 ```powershell
