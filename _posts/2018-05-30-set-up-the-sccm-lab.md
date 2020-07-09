@@ -32,13 +32,13 @@ However, at MMS [Steve Jesok](https://twitter.com/sejesok) pointed out that Micr
     ![run_setup_exe.PNG](/img/200/run_setup_exe.PNG)
 4. **Setup Wizard** - Click _Next_ all the way through to the end.  It will import all the VMs into Hyper-V.
 
-    ![setup_wizard.PNG](/img/200/setup_wizard.png)
+    ![setup_wizard.png](/img/200/setup_wizard.png)
 
 5. **Configure VM Settings** - You should see HYD-DC1 and HYD-GW1 already running.  Shut them down.  We won't be using HYD-GW1 again.
 
 6. **Domain Controller** - Right click HYD-DC1 and select _Settings_. Set _Maximum Memory_ to **2048**MB and leave _Enable Dynamic Memory_ checked.  Set CPU to **one** virtual processor.
 
-    ![hyd-dc1_settings.PNG](/img/200/hyd-dc1_settings.png)
+    ![hyd-dc1_settings.png](/img/200/hyd-dc1_settings.png)
 7. **MEMCM Server** - Right click HYD-CM1 and select _Settings_. Leave memory settings at default. Set CPU to **two** virtual processors.
 
     ![hyd-cm1_settings.PNG](/img/200/hyd-cm1_settings.PNG)
