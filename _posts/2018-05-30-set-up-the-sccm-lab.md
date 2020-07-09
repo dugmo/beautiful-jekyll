@@ -68,7 +68,7 @@ However, at MMS [Steve Jesok](https://twitter.com/sejesok) pointed out that Micr
 
     ![memcm_console.png](/img/200/memcm_console.png)
 
-Refer to the [**troubleshooting**](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/#Troubleshooting) section if anything isn't working at this point
+Refer to the [**troubleshooting**](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/#troubleshooting) section if anything isn't working at this point
 
 ### The Finishing Touch
 ###### Now that we've got a functioning domain, MEMCM server, and internet access, it's time to update.
