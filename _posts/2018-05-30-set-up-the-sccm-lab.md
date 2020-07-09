@@ -67,8 +67,7 @@ However, at MMS [Steve Jesok](https://twitter.com/sejesok) pointed out that Micr
 4. Give HYD-CM1 another moment for services to start up.  Launch the _Microsoft Endpoint Manager Configuration Manager Console_ and confirm that it loads successfully.
 
     ![memcm_console.png](/img/200/memcm_console.png)
-###### Refer to the [**troubleshooting**](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/#Troubleshooting) section if anything isn't working at this point
-[**Troubleshooting**](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/#Troubleshooting)
+Refer to the [**troubleshooting**](https://doug.seiler.us/2018-05-30-set-up-the-sccm-lab/#Troubleshooting) section if anything isn't working at this point
 
 ### The Finishing Touch
 ###### Now that we've got a functioning domain, MEMCM server, and internet access, it's time to update.
