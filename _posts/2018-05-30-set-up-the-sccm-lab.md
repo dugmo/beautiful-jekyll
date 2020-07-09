@@ -32,13 +32,13 @@ However, at MMS [Steve Jesok](https://twitter.com/sejesok) pointed out that Micr
     ![run_setup_exe.PNG](/img/200/run_setup_exe.PNG)
 4. **Setup Wizard** - Click _Next_ all the way through to the end.  It will import all the VMs into Hyper-V.
 
-    ![setup_wizard.PNG](/img/200/setup_wizard.PNG)
+    ![setup_wizard.PNG](/img/200/setup_wizard.png)
 
 5. **Configure VM Settings** - You should see HYD-DC1 and HYD-GW1 already running.  Shut them down.  We won't be using HYD-GW1 again.
 
 6. **Domain Controller** - Right click HYD-DC1 and select _Settings_. Set _Maximum Memory_ to **2048**MB and leave _Enable Dynamic Memory_ checked.  Set CPU to **one** virtual processor.
 
-    ![hyd-dc1_settings.PNG](/img/200/hyd-dc1_settings.PNG)
+    ![hyd-dc1_settings.PNG](/img/200/hyd-dc1_settings.png)
 7. **MEMCM Server** - Right click HYD-CM1 and select _Settings_. Leave memory settings at default. Set CPU to **two** virtual processors.
 
     ![hyd-cm1_settings.PNG](/img/200/hyd-cm1_settings.PNG)
@@ -103,8 +103,7 @@ However, at MMS [Steve Jesok](https://twitter.com/sejesok) pointed out that Micr
 
 ### Troubleshooting
 ###### If there are any obstacles during set up, we can try some of these troubleshooting tips
-
-1. If you cannot ping 8.8.8.8, we don't have access to the internet.  From CM1, try pinging DC1 at 10.0.0.6.  If that works, try pinging the NAT gateway at 10.0.0.254.  If that doesn't work, try temporarily disabling the firewall as that might be blocking access.  You may need to remove and redo the NAT networking as well, so run the following command in an elevated Powershell terminal:
+1. **Firewall** - If you cannot ping 8.8.8.8, we don't have access to the internet.  From CM1, try pinging DC1 at 10.0.0.6.  If that works, try pinging the NAT gateway at 10.0.0.254.  If that doesn't work, try temporarily disabling the firewall as that might be blocking access.  You may need to remove and redo the NAT networking as well, so run the following command in an elevated Powershell terminal:
 ```powershell
     Remove-NetIPAddress -IPAddress 10.0.0.254
     Remove-NetNat
@@ -112,6 +111,6 @@ However, at MMS [Steve Jesok](https://twitter.com/sejesok) pointed out that Micr
     New-NetIPAddress –IPAddress 10.0.0.254 -PrefixLength 24 -InterfaceAlias "vEthernet (HYD-CorpNet)" 
     New-NetNat –Name HYD-CorpNetNATNetwork –InternalIPInterfaceAddressPrefix 10.0.0.0/24
 ```
-2. If you can ping 10.0.0.254 but STILL can't ping 8.8.8.8, make sure HYD-GW1 is powered off.  If it is, the issue is on the host system.  From the host system, ping CM1 at 10.0.0.7 to confirm NAT is working.  If NAT is working, from CM1 ping the host IP of the physical adapter.
+2. **NAT** - If you can ping 10.0.0.254 but STILL can't ping 8.8.8.8, make sure HYD-GW1 is powered off.  If it is, the issue is on the host system.  From the host system, ping CM1 at 10.0.0.7 to confirm NAT is working.  If NAT is working, from CM1 ping the host IP of the physical adapter.
 
-3. The lab network is 10.0.0.0/24.  If our home network is also on 10.0.0.0/24 we'll have trouble getting out.  We will either need to ditch the NAT and rely on GW1, or re-IP DC1 and CM1 and our NAT configuration on a different network.  Just keep in mind in subsequent blog posts we'll need to adjust networking respectively.
+3. **Subnet** - The lab network is 10.0.0.0/24.  If our home network is also on 10.0.0.0/24 we'll have trouble getting out.  We will either need to ditch the NAT and rely on GW1, or re-IP DC1 and CM1 and our NAT configuration on a different network.  Just keep in mind in subsequent blog posts we'll need to adjust networking respectively.
